@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { formatPrice } from '../Data/FoodData';
 import {
   DialogContent,
   DialogFooter,
   ConfirmButton,
+  getPrice
 } from '../FoodDialog/FoodDialog';
 
 const OrderStyled = styled.div`
@@ -23,6 +25,17 @@ const OrderContent = styled(DialogContent)`
   height: 100%;
 `;
 
+const OrderContainer = styled.div`
+  padding: 10px 0px;
+  border-bottom: 1px solid grey;
+`
+const OrderItem = styled.div`
+  padding: 10px 0px;
+  display: grid;
+  grid-template-columns: 20px 150px 20px 60px;
+  justify-content: space-between;
+`
+
 export function Order({ orders }) {
   return (
     <OrderStyled>
@@ -30,7 +43,20 @@ export function Order({ orders }) {
         <OrderContent>Your order's looking empty
           <span role='img' aria-label='smile'>{' '}😃</span></OrderContent>
       ) : (
-        <OrderContent>Found {orders.length} {orders.length === 1 ? 'order' : 'orders'}
+        <OrderContent>
+          <OrderContainer>
+            Your Order:
+          </OrderContainer>{' '}
+          {orders.map(order => (
+            <OrderContainer>
+              <OrderItem key={order.id}>
+                <div>{order.quantity}</div>
+                <div>{order.name}</div>
+                <div></div>
+                {formatPrice(getPrice(order))}
+              </OrderItem>
+            </OrderContainer>
+          ))}
         </OrderContent>
       )}
       <DialogFooter>
